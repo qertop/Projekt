@@ -15,7 +15,7 @@ int suma(const vector<int>& wektor) { //przyjmuje referencję do wektora wektor,
 
 //! Funkcja usuwająca powtórzenia z listy podzbiorów !!!FUNKCJA TA WYKORZYSTUJE ALGORYTM SORTUJACY PRZEZ WYBRANIE!!!
 void usunPowtorzenia(vector<vector<int>>& podzbiory) {
-    for (auto& podzbior : podzbiory) {
+    for (auto& podzbior : podzbiory) { //auto automatycznie określa typ zmiennej na podstawie jej wartości początkowej
             for (int i = 0; i < podzbior.size()-1; i++) {
                 for (int j = 0; j < podzbior.size()-1; j++) {
                     if(podzbior[j+1]<podzbior[j])swap(podzbior[j],podzbior[j+1]);
@@ -27,14 +27,14 @@ void usunPowtorzenia(vector<vector<int>>& podzbiory) {
         }
 
     set<vector<int>> unikalnePodzbiory(podzbiory.begin(), podzbiory.end()); //wywolanie set przyjmuje jedynie unikalne rekordy przez co znikaja powtorzenia
-    podzbiory.assign(unikalnePodzbiory.begin(), unikalnePodzbiory.end());
+    podzbiory.assign(unikalnePodzbiory.begin(), unikalnePodzbiory.end()); //przywracamy podzbiory do swojej początkowej formy
 }
 
 // Funkcja generująca wszystkie podzbiory i sprawdzająca warunek
 void znajdzPodzbiory(vector<int>& liczby) {
     int n = liczby.size();
     int sumaCalkowita = suma(liczby);
-    vector<vector<int>> poprawnePodzbiory; //wektor wektorow (w pewnym sensie tablica liczb)
+    vector<vector<int>> poprawnePodzbiory; //wektor wektorow (w pewnym sensie tablica liczb) przechowujacy podzbiory spelniajace warunki
 
     // Iterujemy po wszystkich podzbiorach (2^n możliwości)
     for (int maska = 0; maska < (1 << n); ++maska) {
@@ -44,7 +44,6 @@ void znajdzPodzbiory(vector<int>& liczby) {
                 podzbior.push_back(liczby[i]);
             }
         }
-
         // Sprawdzamy czy suma podzbioru spełnia warunek
         int sumaPodzbioru = suma(podzbior);
         int sumaPozostalych = sumaCalkowita - sumaPodzbioru;
@@ -54,37 +53,31 @@ void znajdzPodzbiory(vector<int>& liczby) {
     }
 
     // Usuwamy powtórzenia
-    usunPowtorzenia(poprawnePodzbiory);
+    //usunPowtorzenia(poprawnePodzbiory);
 
     // Wypisujemy wyniki
     if (poprawnePodzbiory.empty()) {
         cout << "Brak podzbiorów spełniających zadane kryteria." << endl;
-    } else {
-        /*
-        // Sortujemy wyniki według rozmiaru podzbioru
-        sort(poprawnePodzbiory.begin(), poprawnePodzbiory.end(), [](const vector<int>& a, const vector<int>& b) {
-            return a.size() < b.size();
-        });
-*/
-int minimalnyRozmiar=poprawnePodzbiory[0].size();
-        for(int i=0;i<poprawnePodzbiory.size();i++)if(poprawnePodzbiory[i].size()<minimalnyRozmiar)minimalnyRozmiar=poprawnePodzbiory[i].size();//poprawnePodzbiory.size();
-
-
+    }
+    else {
+        int minimalnyRozmiar=poprawnePodzbiory[0].size();
+        for(int i=0;i<poprawnePodzbiory.size();i++)if(poprawnePodzbiory[i].size()<minimalnyRozmiar)minimalnyRozmiar=poprawnePodzbiory[i].size();
         for (const auto& podzbior : poprawnePodzbiory) {
             if (podzbior.size() == minimalnyRozmiar){
-            cout << "[";
-            for (size_t i = 0; i < podzbior.size(); ++i) {
-                cout << podzbior[i];
-                if (i < podzbior.size() - 1) cout << ", ";
-            }
+                cout << "[";
+                for (size_t i = 0; i < podzbior.size(); ++i) {
+                    cout << podzbior[i];
+                    if (i < podzbior.size() - 1)cout << ", ";
+                }
             cout << "]\n";
-        }}
+            }
+        }
     }
 }
 
 int main() {
-    vector<int> liczby = {63,3,3,3,1,2,3,4,6,4,76,8,5,76,3,3,5,7,6,33,63,9,9}; // Przykładowe dane
-    znajdzPodzbiory(liczby);
+    vector<int> liczby = {2,1,1,4,7,10,7}; // Przykładowe dane
+    znajdzPodzbiory(liczby); //wywolanie funckji
 
     return 0;
 }
