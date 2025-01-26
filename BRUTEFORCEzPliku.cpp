@@ -4,11 +4,16 @@
 #include <fstream>
 #include <sstream>
 using namespace std;
-
+vector<int> powtorki(vector<int>liczby){ //funckja zmieniajaca pozycje tych samych liczb (przydatne do set)
+for(int i=0;i<liczby.size()-1;i++){
+    for(int j=liczby.size()-1;j>i;j--){
+        if(liczby[i]==liczby[j])swap(liczby[i+1],liczby[j]);
+    }
+}
+return liczby;
+}
 // Funkcja pomocnicza do obliczenia sumy elementow wektora
-int suma(const vector<int>& wektor) { //przyjmuje referencje
-//do wektora wektor, zamiast kopiowac dane
-//const aby nie zmienic wartosci
+int suma(const vector<int>& wektor) { //const aby nie zmienic wartosci
     int sumaCalkowita = 0;
     for (int liczba : wektor) { //petla range for, liczba
     //w kolejnych iteracjach przyjmuje kolejne wartosci
@@ -19,7 +24,7 @@ int suma(const vector<int>& wektor) { //przyjmuje referencje
 }
 
 // Funkcja generujaca wszystkie podzbiory i sprawdzajaca warunek
-void znajdzPodzbiory(vector<int>& liczby) {
+void znajdzPodzbiory(vector<int> liczby) {
     int n = liczby.size();
     int sumaCalkowita = suma(liczby);
     vector<vector<int>> poprawnePodzbiory; //wektor wektorow
@@ -42,20 +47,19 @@ void znajdzPodzbiory(vector<int>& liczby) {
             poprawnePodzbiory.push_back(podzbior);
         }
     }
-
-
-
     // Wypisujemy wyniki
     if (poprawnePodzbiory.empty()) {
         cout << "Brak podzbiorow";
-        cout << "spelniajacych zadane kryteria." << endl;
+        cout << " spelniajacych zadane kryteria." << endl;
     }
     else {
         int minimalnyRozmiar=poprawnePodzbiory[0].size();
         for(int i=0;i<poprawnePodzbiory.size();i++){
         if(poprawnePodzbiory[i].size()<minimalnyRozmiar){
         minimalnyRozmiar=poprawnePodzbiory[i].size();}}
-        for (const auto& podzbior : poprawnePodzbiory) {
+        set<vector<int>> unikalneWyniki(poprawnePodzbiory.begin(), poprawnePodzbiory.end()); //wywolanie set przyjmuje jedynie unikalne rekordy przez co znikaja powtorzenia
+        poprawnePodzbiory.assign(unikalneWyniki.begin(), unikalneWyniki.end()); //przywróceie poprawneWyniki do postaci wektora
+        for (const auto podzbior : poprawnePodzbiory) {
             if (podzbior.size() == minimalnyRozmiar){
                 cout << "[";
                 for (size_t i = 0; i < podzbior.size(); ++i) {
@@ -89,7 +93,16 @@ bool wczytajPlik()
 
         if (!liczby.empty()) // Jeœli znaleziono liczby, przeka¿ je do funkcji
         {
-            znajdzPodzbiory(liczby);
+
+
+
+                cout << "[";
+                for (size_t i = 0; i < liczby.size(); ++i) {
+                    cout << liczby[i];
+                    if (i < liczby.size() - 1)cout << ", ";
+                }
+            cout << "]\n";
+            znajdzPodzbiory(powtorki(liczby));
             cout<<endl;
         }
     }
@@ -103,8 +116,6 @@ bool wczytajPlik()
 
 
 int main() {
-    vector<int> liczby = {2,7,3,1}; // Przykladowe dane
-    //znajdzPodzbiory(liczby); //wywolanie funckji
     wczytajPlik();
     return 0;
 }
