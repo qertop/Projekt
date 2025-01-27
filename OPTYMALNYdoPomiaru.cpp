@@ -106,7 +106,7 @@ bool wczytajPlik()
 
 
                 cout << "[";
-                for (size_t i = 0; i < liczby.size(); ++i) {
+                for (int i = 0; i < liczby.size(); ++i) {
                     cout << liczby[i];
                     if (i < liczby.size() - 1)cout << ", ";
                 }
@@ -124,12 +124,6 @@ bool wczytajPlik()
     return true;
 }
 int main() {
-    //vector<int> wejscie = {9, 76, 3, 3, 100, 63, 9, 7, 3, 63, 3, 1, 76, 5, 3, 2, 23, 4, 4, 6, 8, 5, 55, 33, 3, 6};
-    //cout<<suma(wejscie)<<endl; //suma elementów zbioru
-    //cout<<"Rozmiar najmniejszego ";
-    //wypisz(wejscie);
-    //cout<<endl;
-    //RozmiarNajmniejszyDominujacyPodzbior(powtorki(wejscie),suma(wejscie),wejscie.size());
     wczytajPlik();
     return 0;
 }

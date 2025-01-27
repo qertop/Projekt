@@ -5,33 +5,23 @@
 using namespace std;
 
 // Funkcja pomocnicza do obliczenia sumy elementów wektora
-int suma(const vector<int>& wektor) { //przyjmuje referencję do wektora wektor, zamiast kopiowac dane/const aby nie zmienic wartosci
+int suma(const vector<int> wektor) { //const aby nie zmienic wartosci
     int sumaCalkowita = 0;
     for (int liczba : wektor) { //petla range for, liczba w kolejnych iteracjach przyjmuje kolejne wartosci w wektorze wektor
         sumaCalkowita += liczba;
     }
     return sumaCalkowita;
 }
-
-//! Funkcja usuwająca powtórzenia z listy podzbiorów !!!FUNKCJA TA WYKORZYSTUJE ALGORYTM SORTUJACY PRZEZ WYBRANIE!!!
-void usunPowtorzenia(vector<vector<int>>& podzbiory) {
-    for (auto& podzbior : podzbiory) { //auto automatycznie określa typ zmiennej na podstawie jej wartości początkowej
-            for (int i = 0; i < podzbior.size()-1; i++) {
-                for (int j = 0; j < podzbior.size()-1; j++) {
-                    if(podzbior[j+1]<podzbior[j])swap(podzbior[j],podzbior[j+1]);
-                }
-
-
-            }
-
-        }
-
-    set<vector<int>> unikalnePodzbiory(podzbiory.begin(), podzbiory.end()); //wywolanie set przyjmuje jedynie unikalne rekordy przez co znikaja powtorzenia
-    podzbiory.assign(unikalnePodzbiory.begin(), unikalnePodzbiory.end()); //przywracamy podzbiory do swojej początkowej formy
+vector<int> powtorki(vector<int>liczby){ //funckja zmieniajaca pozycje tych samych liczb (przydatne do set)
+for(int i=0;i<liczby.size()-1;i++){
+    for(int j=liczby.size()-1;j>i;j--){
+        if(liczby[i]==liczby[j])swap(liczby[i+1],liczby[j]);
+    }
 }
-
+return liczby;
+}
 // Funkcja generująca wszystkie podzbiory i sprawdzająca warunek
-void znajdzPodzbiory(vector<int>& liczby) {
+void znajdzPodzbiory(vector<int> liczby) {
     int n = liczby.size();
     int sumaCalkowita = suma(liczby);
     vector<vector<int>> poprawnePodzbiory; //wektor wektorow (w pewnym sensie tablica liczb) przechowujacy podzbiory spelniajace warunki
@@ -62,10 +52,12 @@ void znajdzPodzbiory(vector<int>& liczby) {
     else {
         int minimalnyRozmiar=poprawnePodzbiory[0].size();
         for(int i=0;i<poprawnePodzbiory.size();i++)if(poprawnePodzbiory[i].size()<minimalnyRozmiar)minimalnyRozmiar=poprawnePodzbiory[i].size();
-        for (const auto& podzbior : poprawnePodzbiory) {
+        set<vector<int>> unikalneWyniki(poprawnePodzbiory.begin(), poprawnePodzbiory.end()); //wywolanie set przyjmuje jedynie unikalne rekordy przez co znikaja powtorzenia
+        poprawnePodzbiory.assign(unikalneWyniki.begin(), unikalneWyniki.end()); //przywróceie poprawneWyniki do postaci wektora
+        for (vector <int> podzbior : poprawnePodzbiory) {
             if (podzbior.size() == minimalnyRozmiar){
                 cout << "[";
-                for (size_t i = 0; i < podzbior.size(); ++i) {
+                for (int i = 0; i < podzbior.size(); ++i) {
                     cout << podzbior[i];
                     if (i < podzbior.size() - 1)cout << ", ";
                 }
@@ -76,8 +68,8 @@ void znajdzPodzbiory(vector<int>& liczby) {
 }
 
 int main() {
-    vector<int> liczby = {2,1,1,4,7,10,7}; // Przykładowe dane
-    znajdzPodzbiory(liczby); //wywolanie funckji
+    vector<int> liczby = {2,1,3,9,3}; // Przykładowe dane
+    znajdzPodzbiory(powtorki(liczby)); //wywolanie funckji
 
     return 0;
 }

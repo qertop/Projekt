@@ -13,7 +13,7 @@ for(int i=0;i<liczby.size()-1;i++){
 return liczby;
 }
 // Funkcja pomocnicza do obliczenia sumy elementow wektora
-int suma(const vector<int>& wektor) { //const aby nie zmienic wartosci
+int suma(const vector<int> wektor) { //const aby nie zmienic wartosci
     int sumaCalkowita = 0;
     for (int liczba : wektor) { //petla range for, liczba
     //w kolejnych iteracjach przyjmuje kolejne wartosci
@@ -59,10 +59,10 @@ void znajdzPodzbiory(vector<int> liczby) {
         minimalnyRozmiar=poprawnePodzbiory[i].size();}}
         set<vector<int>> unikalneWyniki(poprawnePodzbiory.begin(), poprawnePodzbiory.end()); //wywolanie set przyjmuje jedynie unikalne rekordy przez co znikaja powtorzenia
         poprawnePodzbiory.assign(unikalneWyniki.begin(), unikalneWyniki.end()); //przywróceie poprawneWyniki do postaci wektora
-        for (const auto podzbior : poprawnePodzbiory) {
+        for (vector <int> podzbior : poprawnePodzbiory) {
             if (podzbior.size() == minimalnyRozmiar){
                 cout << "[";
-                for (size_t i = 0; i < podzbior.size(); ++i) {
+                for (int i = 0; i < podzbior.size(); ++i) {
                     cout << podzbior[i];
                     if (i < podzbior.size() - 1)cout << ", ";
                 }
@@ -97,7 +97,7 @@ bool wczytajPlik()
 
 
                 cout << "[";
-                for (size_t i = 0; i < liczby.size(); ++i) {
+                for (int i = 0; i < liczby.size(); ++i) {
                     cout << liczby[i];
                     if (i < liczby.size() - 1)cout << ", ";
                 }
